@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Logger</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #log { white-space: pre-wrap; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Request Logger</h1>
+    <div id="log"></div>
+
+    <script>
+        const logDiv = document.getElementById('log');
+        const ws = new WebSocket(`ws://${window.location.host}`);
+
+        ws.onmessage = (event) => {
+            const logEntry = JSON.parse(event.data);
+            const logText = `
+                Time: ${logEntry.timestamp}
+                Method: ${logEntry.method}
+                URL: ${logEntry.url}
+                IP: ${logEntry.ip}
+                Headers: ${JSON.stringify(logEntry.headers, null, 2)}
+                Query: ${JSON.stringify(logEntry.query, null, 2)}
+                Body: ${JSON.stringify(logEntry.body, null, 2)}
+            `;
+            logDiv.textContent += logText + '\n\n';
+        };
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+    </script>
+</body>
+</html>
