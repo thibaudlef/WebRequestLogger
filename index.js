@@ -28,6 +28,10 @@ wss.on('connection', (ws) => {
         console.log('WebSocket connection closed');
     });
 
+    ws.on('error', (error) => {
+        console.error('WebSocket error:', error);
+    });
+
     ws.on('message', (message) => {
         console.log('Received message from client:', message);
     });

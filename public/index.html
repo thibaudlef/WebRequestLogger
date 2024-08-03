@@ -18,6 +18,7 @@
         const ws = new WebSocket(`ws://${window.location.host}`);
 
         ws.onmessage = (event) => {
+            console.log('Message received from server');
             const logEntry = JSON.parse(event.data);
             const logText = `
                 Time: ${logEntry.timestamp}
