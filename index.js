@@ -37,6 +37,20 @@ wss.on('connection', (ws) => {
     });
 });
 
+// Endpoint to return request details
+app.get('/request-details', (req, res) => {
+    const requestDetails = {
+        method: req.method,
+        headers: req.headers,
+        query: req.query,
+        body: req.body,
+        url: req.url,
+        ip: req.ip,
+        timestamp: new Date().toISOString()
+    };
+    res.json(requestDetails);
+});
+
 app.use((req, res, next) => {
     const requestDetails = {
         method: req.method,
