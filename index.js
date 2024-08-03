@@ -4,12 +4,11 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Middleware to log requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // WebSocket setup
 const server = app.listen(port, () => {
@@ -21,10 +20,16 @@ const wss = new WebSocket.Server({ server });
 let clients = [];
 
 wss.on('connection', (ws) => {
+    console.log('New WebSocket connection');
     clients.push(ws);
 
     ws.on('close', () => {
         clients = clients.filter(client => client !== ws);
+        console.log('WebSocket connection closed');
+    });
+
+    ws.on('message', (message) => {
+        console.log('Received message from client:', message);
     });
 });
 

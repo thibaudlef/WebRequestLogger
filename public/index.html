@@ -6,7 +6,7 @@
     <title>Request Logger</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        #log { white-space: pre-wrap; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; }
+        #log { white-space: pre-wrap; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; max-height: 70vh; overflow-y: scroll; }
     </style>
 </head>
 <body>
@@ -29,6 +29,7 @@
                 Body: ${JSON.stringify(logEntry.body, null, 2)}
             `;
             logDiv.textContent += logText + '\n\n';
+            logDiv.scrollTop = logDiv.scrollHeight; // Auto-scroll to the latest log
         };
 
         ws.onopen = () => {
@@ -37,6 +38,10 @@
 
         ws.onclose = () => {
             console.log('WebSocket connection closed');
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
         };
     </script>
 </body>
